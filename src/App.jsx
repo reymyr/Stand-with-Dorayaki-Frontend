@@ -1,45 +1,38 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React from 'react';
+// import './App.css'
+import {Container} from 'react-bootstrap';
+import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
+
+import Navbar from './components/Navbar.jsx';
+import ListToko from './components/ListToko.jsx';
+import AddToko from './components/AddToko.jsx';
+import EditToko from './components/EditToko.jsx';
+import StokToko from './components/StokToko.jsx';
+import ListDorayaki from './components/ListDorayaki.jsx';
+import AddDorayaki from './components/AddDorayaki.jsx';
+import EditDorayaki from './components/EditDorayaki.jsx';
+import Transfer from './components/Transfer.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Container>
+          <Switch>
+            <Route path="/toko/add" component={AddToko} />
+            <Route path="/toko/edit" component={EditToko} />
+            <Route path="/toko/stok" component={StokToko} />
+            <Route path="/toko" component={ListToko} />
+            <Route path="/dorayaki/add" component={AddDorayaki} />
+            <Route path="/dorayaki/edit" component={EditDorayaki} />
+            <Route path="/dorayaki" component={ListDorayaki} />
+            <Route path="/transfer" component={Transfer} />
+          </Switch>
+        </Container>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
