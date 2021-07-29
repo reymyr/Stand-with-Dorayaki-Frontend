@@ -18,6 +18,8 @@ export default class Transfer extends Component {
 
     this.stokToko = this.stokToko.bind(this);
     this.onChangeTokoAsal = this.onChangeTokoAsal.bind(this);
+    this.onChangeTokoTujuan = this.onChangeTokoTujuan.bind(this);
+    this.onClickTransfer = this.onClickTransfer.bind(this);
 
     this.state = {
       toko: [],
@@ -79,7 +81,6 @@ export default class Transfer extends Component {
   }
 
   onChangeTokoAsal(e) {
-    console.log(e.target.value);
     const id = e.target.value;
 
     axios.get(`http://localhost:5000/toko/${id}`)
@@ -89,6 +90,10 @@ export default class Transfer extends Component {
         .catch((error) => {
           console.log(error);
         });
+  }
+
+  onChangeTokoTujuan(e) {
+    this.setState({idTokoTujuan: e.target.value});
   }
 
   addClick() {
@@ -101,6 +106,24 @@ export default class Transfer extends Component {
     const stok = [...this.state.stok];
     stok.splice(i, 1);
     this.setState({stok});
+  }
+
+  onClickTransfer() {
+    console.log(this.state);
+
+    const data = {
+      asal: this.state.tokoAsal._id,
+      tujuan: this.state.idTokoTujuan,
+      stok: this.state.stok,
+    };
+
+    axios.patch('http://localhost:5000/toko/transfer', data)
+        .then((res) => console.log(res.data))
+        .catch((error) => {
+          console.log(error);
+        });
+
+    window.location.reload();
   }
 
   onChangeRasa(i, e) {
@@ -121,32 +144,52 @@ export default class Transfer extends Component {
     return (
       <>
         <Form.Group as={Col} className="mb-3">
-          <Form.Select value={this.state.tokoAsal._id || ''} name="tokoAsal" onChange={this.onChangeTokoAsal}>
+          <Form.Label><h3>Toko Asal</h3></Form.Label>
+          <Form.Select required value={this.state.tokoAsal._id || ''} name="tokoAsal" onChange={this.onChangeTokoAsal}>
             <option value="" hidden disabled>-- Toko Asal --</option>
             {this.state.toko.map((curToko) => (
               <option key={curToko._id} value={curToko._id}>{curToko.nama}</option>
             ))}
           </Form.Select>
         </Form.Group>
-        <Table responsive>
-          <thead>
-            <tr>
-              <th>Rasa Dorayaki</th>
-              <th>Jumlah</th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.stokToko() }
-          </tbody>
-        </Table>
-        {this.createInputStok()}
-        <Row>
-          <Col md={{offset: 4}}>
-            <Button variant="primary" onClick={this.addClick.bind(this) }>
-              +
-            </Button>
-          </Col>
-        </Row>
+        { this.state.tokoAsal._id &&
+          <>
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>Rasa Dorayaki</th>
+                  <th>Jumlah</th>
+                </tr>
+              </thead>
+              <tbody>
+                { this.stokToko() }
+              </tbody>
+            </Table>
+            <Row>
+              <h5>Stok yang akan ditransfer</h5>
+            </Row>
+            {this.createInputStok()}
+            <Row>
+              <Col md={{offset: 4}}>
+                <Button variant="primary" onClick={this.addClick.bind(this)}>
+                  +
+                </Button>
+              </Col>
+            </Row>
+          </>
+        }
+        <Form.Group as={Col} className="mb-3">
+        <Form.Label><h3>Toko Tujuan</h3></Form.Label>
+          <Form.Select required value={this.state.idTokoTujuan || ''} name="tokoTujuan" onChange={this.onChangeTokoTujuan}>
+            <option value="" hidden disabled>-- Toko Tujuan --</option>
+            {this.state.toko.map((curToko) => (
+              <option key={curToko._id} value={curToko._id}>{curToko.nama}</option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+        <Button variant="primary" onClick={this.onClickTransfer}>
+          Transfer
+        </Button>
       </>
     );
   }
