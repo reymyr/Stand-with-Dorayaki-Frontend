@@ -1,5 +1,4 @@
 import React from 'react';
-// import './App.css'
 import {Container} from 'react-bootstrap';
 import {Switch, Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 

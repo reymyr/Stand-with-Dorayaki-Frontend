@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 import {Row, Col, Form, Button, Image} from 'react-bootstrap';
-// import {LinkContainer} from 'react-router-bootstrap';
-
-// import TokoCard from './TokoCard';
 
 import axios from 'axios';
 
