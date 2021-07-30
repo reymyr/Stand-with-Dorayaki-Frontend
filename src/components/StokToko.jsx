@@ -27,7 +27,7 @@ export default class StokToko extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:5000/toko/${this.props.location.state.id}`)
+    axios.get(`/toko/${this.props.location.state.id}`)
         .then((response) => {
           this.setState({toko: response.data});
         })
@@ -35,7 +35,7 @@ export default class StokToko extends Component {
           console.log(error);
         });
 
-    axios.get('http://localhost:5000/dorayaki')
+    axios.get('/dorayaki')
         .then((response) => {
           this.setState({dorayaki: response.data});
         })
