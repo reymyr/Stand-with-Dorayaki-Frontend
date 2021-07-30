@@ -18,17 +18,6 @@ export default class EditToko extends Component {
     };
   }
 
-  componentDidMount() {
-    //   axios.get('http://localhost:5000/dorayaki/')
-    //     .then(response => {
-    //       this.setState({ toko: response.data })
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     })
-    // console.log(this.state)
-  }
-
   onChangeNama(e) {
     this.setState({
       nama: e.target.value,
@@ -63,7 +52,7 @@ export default class EditToko extends Component {
       provinsi: this.state.provinsi,
     };
 
-    axios.put(`http://localhost:5000/toko/update/${this.state._id}`, toko)
+    axios.put(`/toko/${this.state._id}`, toko)
         .then((res) => console.log(res.data));
 
     window.location = '/toko';
@@ -92,7 +81,7 @@ export default class EditToko extends Component {
           <Form.Control onChange={this.onChangeProvinsi} required type="text" value={this.state.provinsi} />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button className="m-3" variant="primary" type="submit">
           Submit
         </Button>
       </Form>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Image, Table} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {Link} from 'react-router-dom';
+import {Delete} from '@material-ui/icons';
 
 import axios from 'axios';
 
@@ -19,12 +20,18 @@ const Dorayaki = (props) => (
           state: {...props.dorayaki, file: props.file},
         }}
       >
-        edit
+        <Button className="me-1" size="sm" variant="primary">
+          Edit
+        </Button>
       </Link>
-      <br />
-      <a href="#" onClick={() => {
-        props.deleteDorayaki(props.dorayaki._id);
-      }}>delete</a>
+      <Button 
+        className="mx-1"
+        size="sm"
+        variant="danger" 
+        onClick={() => {props.deleteDorayaki(props.dorayaki._id);}}
+      >
+        <Delete fontSize="small"/>
+      </Button>
     </td>
   </tr>
 );
@@ -39,17 +46,17 @@ export default class ListDorayaki extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/dorayaki/')
+    axios.get('/dorayaki')
         .then((response) => {
           this.setState({dorayaki: response.data});
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
   }
 
   deleteDorayaki(id) {
-    axios.delete('http://localhost:5000/dorayaki/'+id)
+    axios.delete('/dorayaki/'+id)
         .then((response) => {
           console.log(response.data);
         });
@@ -68,12 +75,14 @@ export default class ListDorayaki extends Component {
   render() {
     return (
       <>
-        <Table responsive>
+        <h2 className="my-3">List Dorayaki</h2>
+        <Table style={{tableLayout: "fixed", overflowWrap: 'break-word'}}>
           <thead>
             <tr>
               <th>Gambar</th>
               <th>Rasa</th>
               <th>Deskripsi</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>

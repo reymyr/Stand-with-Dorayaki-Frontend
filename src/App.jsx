@@ -1,7 +1,7 @@
 import React from 'react';
 // import './App.css'
 import {Container} from 'react-bootstrap';
-import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
+import {Switch, Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 
 import Navbar from './components/Navbar.jsx';
 import ListToko from './components/ListToko.jsx';
@@ -12,6 +12,7 @@ import ListDorayaki from './components/ListDorayaki.jsx';
 import AddDorayaki from './components/AddDorayaki.jsx';
 import EditDorayaki from './components/EditDorayaki.jsx';
 import Transfer from './components/Transfer.jsx';
+import NotFound from './components/NotFound.jsx';
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
             <Route path="/dorayaki/edit" component={EditDorayaki} />
             <Route path="/dorayaki" component={ListDorayaki} />
             <Route path="/transfer" component={Transfer} />
+            <Route exact path="/" >
+              <Redirect to="/toko" />
+            </Route>
+            <Route component={NotFound} />
           </Switch>
         </Container>
       </div>

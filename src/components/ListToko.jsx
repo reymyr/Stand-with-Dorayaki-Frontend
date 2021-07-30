@@ -2,15 +2,14 @@ import React, {Component} from 'react';
 import {Button, Table} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {Link} from 'react-router-dom';
-
-// import TokoCard from './TokoCard';
+import {Delete} from '@material-ui/icons';
 
 import axios from 'axios';
 
 const Toko = (props) => (
   <tr>
     <td>{props.toko.nama}</td>
-    <td>{props.toko.jalan}</td>
+    <td >{props.toko.jalan}</td>
     <td>{props.toko.kecamatan}</td>
     <td>{props.toko.provinsi}</td>
     <td>
@@ -20,22 +19,28 @@ const Toko = (props) => (
           state: {id: props.toko._id},
         }}
       >
-        stok
+        <Button className="me-1" size="sm" variant="primary">
+          Stok
+        </Button>
       </Link>
-    </td>
-    <td>
       <Link
         to={{
           pathname: '/toko/edit',
           state: {...props.toko},
         }}
       >
-        edit
+        <Button className="mx-1" size="sm" variant="primary">
+          Edit
+        </Button>
       </Link>
-      <br/>
-      <a href="#" onClick={() => {
-        props.deleteToko(props.toko._id);
-      }}>delete</a>
+      <Button 
+        className="mx-1"
+        size="sm"
+        variant="danger" 
+        onClick={() => { props.deleteToko(props.toko._id);}}
+      >
+        <Delete fontSize="small"/>
+      </Button>
     </td>
   </tr>
 );
@@ -50,7 +55,7 @@ export default class ListToko extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/toko/')
+    axios.get('/toko')
         .then((response) => {
           this.setState({toko: response.data});
         })
@@ -60,7 +65,7 @@ export default class ListToko extends Component {
   }
 
   deleteToko(id) {
-    axios.delete('http://localhost:5000/toko/'+id)
+    axios.delete('/toko/'+id)
         .then((response) => {
           console.log(response.data);
         });
@@ -80,14 +85,15 @@ export default class ListToko extends Component {
   render() {
     return (
       <>
-        <Table responsive>
+        <h2 className="my-3">List Toko</h2>
+        <Table style={{tableLayout: "fixed", overflowWrap: 'break-word'}}>
           <thead>
             <tr>
               <th>Nama Toko</th>
               <th>Jalan</th>
               <th>Kecamatan</th>
               <th>Provinsi</th>
-              <th>Stok</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>

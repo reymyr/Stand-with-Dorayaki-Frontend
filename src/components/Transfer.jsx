@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {Row, Col, Form, Button, Table} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
-import {Link} from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -31,7 +29,7 @@ export default class Transfer extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/toko')
+    axios.get('/toko')
         .then((response) => {
           this.setState({toko: response.data});
         })
@@ -45,7 +43,7 @@ export default class Transfer extends Component {
       <Row key={i}>
         <Form.Group as={Col} className="mb-3">
           <Form.Select value={el.dorayaki || ''} name="dorayaki" onChange={this.onChangeRasa.bind(this, i)}>
-            <option value="" hidden disabled>-- rasa dorayaki --</option>
+            <option value="" hidden disabled>-- Rasa dorayaki --</option>
             {this.state.tokoAsal.stok.map((curStok) => (
               <option key={curStok._id} value={curStok.dorayaki._id}>{curStok.dorayaki.rasa}</option>
             ))}
@@ -64,7 +62,7 @@ export default class Transfer extends Component {
   }
 
   deleteToko(id) {
-    axios.delete('http://localhost:5000/toko/'+id)
+    axios.delete('/toko/'+id)
         .then((response) => {
           console.log(response.data);
         });
@@ -83,7 +81,7 @@ export default class Transfer extends Component {
   onChangeTokoAsal(e) {
     const id = e.target.value;
 
-    axios.get(`http://localhost:5000/toko/${id}`)
+    axios.get(`/toko/${id}`)
         .then((response) => {
           this.setState({tokoAsal: response.data});
         })
@@ -117,13 +115,12 @@ export default class Transfer extends Component {
       stok: this.state.stok,
     };
 
-    axios.patch('http://localhost:5000/toko/transfer', data)
+    axios.patch('/transfer', data)
         .then((res) => console.log(res.data))
+        .then(() => window.location.reload())
         .catch((error) => {
           console.log(error);
         });
-
-    window.location.reload();
   }
 
   onChangeRasa(i, e) {
@@ -143,8 +140,9 @@ export default class Transfer extends Component {
   render() {
     return (
       <>
+        <h2 className="my-3">Transfer Stok</h2>
         <Form.Group as={Col} className="mb-3">
-          <Form.Label><h3>Toko Asal</h3></Form.Label>
+          <Form.Label><h3 className="my-3">Toko Asal</h3></Form.Label>
           <Form.Select required value={this.state.tokoAsal._id || ''} name="tokoAsal" onChange={this.onChangeTokoAsal}>
             <option value="" hidden disabled>-- Toko Asal --</option>
             {this.state.toko.map((curToko) => (
@@ -179,7 +177,7 @@ export default class Transfer extends Component {
           </>
         }
         <Form.Group as={Col} className="mb-3">
-        <Form.Label><h3>Toko Tujuan</h3></Form.Label>
+        <Form.Label><h3 className="my-3">Toko Tujuan</h3></Form.Label>
           <Form.Select required value={this.state.idTokoTujuan || ''} name="tokoTujuan" onChange={this.onChangeTokoTujuan}>
             <option value="" hidden disabled>-- Toko Tujuan --</option>
             {this.state.toko.map((curToko) => (

@@ -17,6 +17,7 @@ export default class StokToko extends Component {
     this.onSubmitAdd = this.onSubmitAdd.bind(this);
     this.onSubmitSubtract = this.onSubmitSubtract.bind(this);
     this.stokToko = this.stokToko.bind(this);
+    this.changeStok = this.changeStok.bind(this);
 
     this.state = {
       toko: {stok: []},
@@ -98,50 +99,48 @@ export default class StokToko extends Component {
     this.setState({newStok});
   }
 
-  onSubmitAdd(e) {
-    e.preventDefault();
-
-    // console.log(this.state.newStok);
-    // if (subtract) {
-    //   const subStok = this.state.newStok.map((el) => {
-    //     return el.jumlah *=-1;
-    //   });
-    // }
-
-    const newStok = {
-      stok: this.state.newStok,
-    };
-
-    axios.patch(`http://localhost:5000/toko/${this.state.toko._id}/stok`, newStok)
+  changeStok(changeStok) {
+    axios.patch(`/toko/${this.state.toko._id}/stok`, changeStok)
         .then((res) => this.setState((prevState) => ({
           toko: {
             ...prevState.toko,
             stok: res.data.stok,
           },
           newStok: [{dorayaki: '', jumlah: 0}],
-        })));
+        })))
+        .catch((err) => {
+          console.log(err);
+        });
+  }
 
-    window.location.reload();
+  onSubmitAdd(e) {
+    e.preventDefault();
+
+    const newStok = {
+      stok: this.state.newStok,
+    };
+
+    this.changeStok(newStok);
   }
 
   onSubmitSubtract(e) {
     e.preventDefault();
-    const newStok = this.state.newStok.map((el) => {
-      el.jumlah *= -1;
-      return el;
-    });
-    this.setState({newStok});
-    this.onSubmitAdd(e);
+
+    const newStok = {
+      stok: this.state.newStok.map(el => ({ dorayaki: el.dorayaki, jumlah: el.jumlah * -1 }))
+    };
+
+    this.changeStok(newStok);
   }
 
   render() {
     return (
       <>
-        <Row>
-          <h3>{this.state.toko.nama}</h3>
+        <Row className="mt-3">
+          <h2>{this.state.toko.nama}</h2>
         </Row>
-        <Row>
-          <h4>{this.state.toko.jalan}</h4>
+        <Row className="mb-3">
+          <h6>{this.state.toko.jalan}, {this.state.toko.kecamatan}, {this.state.toko.provinsi}</h6>
         </Row>
         <Row>
           <h5>Stok</h5>
@@ -172,7 +171,7 @@ export default class StokToko extends Component {
             </Button>
           </Col>
         </Row>
-        <Button variant="primary" type="submit" onClick={this.onSubmitAdd}>
+        <Button className="me-2" variant="primary" type="submit" onClick={this.onSubmitAdd}>
           Tambah Stok
         </Button>
         <Button variant="danger" type="submit" onClick={this.onSubmitSubtract}>

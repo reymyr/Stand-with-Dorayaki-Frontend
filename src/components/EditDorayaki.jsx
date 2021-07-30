@@ -56,7 +56,7 @@ export default class EditDorayaki extends Component {
       gambar: this.state.gambar,
     };
 
-    axios.put(`http://localhost:5000/dorayaki/${this.state._id}`, dorayaki)
+    axios.put(`/dorayaki/${this.state._id}`, dorayaki)
         .then((res) => console.log(res.data))
         .catch((err) => {
           if (err.request) {
@@ -90,13 +90,13 @@ export default class EditDorayaki extends Component {
         {this.state.gambar &&
           <Row>
             <Col>
-              <Image width="128" src={this.state.gambar} />
+              <Image className="m-3" width="128" src={this.state.gambar} />
             </Col>
           </Row>
         }
 
-        <Button variant="primary" type="submit">
-                    Submit
+        <Button className="m-3" variant="primary" type="submit">
+          Submit
         </Button>
       </Form>
     );

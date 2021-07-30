@@ -26,16 +26,6 @@ export default class ListToko extends Component {
     };
   }
 
-  componentDidMount() {
-    axios.get('http://localhost:5000/dorayaki/')
-        .then((response) => {
-          this.setState({dorayaki: response.data});
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  }
-
   onChangeNama(e) {
     this.setState({
       nama: e.target.value,
@@ -73,7 +63,7 @@ export default class ListToko extends Component {
 
     console.log(toko);
 
-    axios.post('http://localhost:5000/toko/add', toko)
+    axios.post('/toko/add', toko)
         .then((res) => console.log(res.data));
 
     window.location = '/toko';
@@ -81,31 +71,34 @@ export default class ListToko extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.onSubmit} autoComplete="off" >
-        <Form.Group className="m-3" controlId="formNamaToko">
-          <Form.Label>Nama Toko</Form.Label>
-          <Form.Control onChange={this.onChangeNama} required type="text" />
-        </Form.Group>
+      <>
+        <h2 className="my-3">Tambah Toko</h2>
+        <Form onSubmit={this.onSubmit} autoComplete="off" >
+          <Form.Group className="m-3" controlId="formNamaToko">
+            <Form.Label>Nama Toko</Form.Label>
+            <Form.Control onChange={this.onChangeNama} required type="text" />
+          </Form.Group>
 
-        <Form.Group className="m-3" controlId="formJalan">
-          <Form.Label>Jalan</Form.Label>
-          <Form.Control onChange={this.onChangeJalan} required type="text" />
-        </Form.Group>
+          <Form.Group className="m-3" controlId="formJalan">
+            <Form.Label>Jalan</Form.Label>
+            <Form.Control onChange={this.onChangeJalan} required type="text" />
+          </Form.Group>
 
-        <Form.Group className="m-3" controlId="formKecamatan">
-          <Form.Label>Kecamatan</Form.Label>
-          <Form.Control onChange={this.onChangeKecamatan} required type="text" />
-        </Form.Group>
+          <Form.Group className="m-3" controlId="formKecamatan">
+            <Form.Label>Kecamatan</Form.Label>
+            <Form.Control onChange={this.onChangeKecamatan} required type="text" />
+          </Form.Group>
 
-        <Form.Group className="m-3" controlId="formProvinsi">
-          <Form.Label>Provinsi</Form.Label>
-          <Form.Control onChange={this.onChangeProvinsi} required type="text" />
-        </Form.Group>
+          <Form.Group className="m-3" controlId="formProvinsi">
+            <Form.Label>Provinsi</Form.Label>
+            <Form.Control onChange={this.onChangeProvinsi} required type="text" />
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-                Submit
-        </Button>
-      </Form>
+          <Button className="m-3" variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </>
     );
   }
 }
